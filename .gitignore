@@ -1,0 +1,14 @@
+bin
+parts
+.installed.cfg
+*.egg-info/
+develop-eggs
+src
+.mr.developer.cfg
+doc/build
+.coverage
+htmlcov
+.tox
+*.py[co]
+*~
+
