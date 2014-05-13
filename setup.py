@@ -22,6 +22,7 @@ setup(name='more.zodb',
       install_requires=[
         'setuptools',
         'morepath',
+        'more.transaction',
         'zodburi',
         ],
       extras_require = dict(
