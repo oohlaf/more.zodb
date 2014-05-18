@@ -1,7 +1,6 @@
 import pytest
 
 from more.zodb.main import zodb_tween_factory, db_from_uri, get_zodb_root
-from ZODB.MappingStorage import MappingStorage
 
 
 def test_get_zodb_root():
@@ -19,6 +18,7 @@ def test_get_zodb_root():
 
 
 def test_db_from_uri():
+    from ZODB.MappingStorage import MappingStorage
     storage = MappingStorage()
 
     def resolve_uri(uri):
