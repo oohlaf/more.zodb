@@ -1,6 +1,6 @@
 import pytest
 
-from more.zodb.main import zodb_tween_factory, db_from_uri
+from more.zodb.main import zodb_tween_factory, db_from_uri, get_zodb_root
 from ZODB.MappingStorage import MappingStorage
 
 
@@ -16,11 +16,19 @@ def test_zodb_handler_exception():
 def test_zodb_handler():
     response = DummyResponse()
 
-    def handler(request):
+    def handler_test_root(request):
+        assert request.primary_zodb_conn
+
+        primary_root = get_zodb_root(request)
+        secondary_root = get_zodb_root(request, 'secondary')
+        assert request.primary_zodb_conn.root() is primary_root
+        assert request.primary_zodb_conn.get_connection('secondary').root() is \
+            secondary_root
+
         return response
 
     app = DummyApp()
-    publish = zodb_tween_factory(app, handler)
+    publish = zodb_tween_factory(app, handler_test_root)
     result = publish(DummyRequest())
     assert result is response
 
@@ -47,7 +55,8 @@ class DummySettingsSectionContainer(object):
 
 class DummyZODBSettingSection(object):
     def __init__(self):
-        self.primary = 'memory://'
+        self.primary = 'memory://one'
+        self.secondary = 'memory://two'
 
 
 class DummyApp(object):
