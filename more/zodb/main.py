@@ -31,7 +31,7 @@ def db_from_uri(uri, dbname, dbmap, resolve_uri=resolve_uri):
 
 
 @app.tween_factory(over=transaction_tween_factory)
-def zodb_tween_factory(app, handler):
+def zodb_tween_factory(app, handler, db_from_uri=db_from_uri):
     databases = {}
     for name, uri in vars(app.settings.zodb).items():
         db = db_from_uri(uri, name, databases)
