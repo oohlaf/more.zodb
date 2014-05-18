@@ -51,6 +51,7 @@ def test_zodb_handler():
 
     def handler_test_get_zodb_root(request):
         req_conn = request.primary_zodb_conn
+        assert req_conn.db.getActivityMonitor()
         assert req_conn.closed is False
         assert req_conn.transaction_manager.aborted is False
 
@@ -113,6 +114,9 @@ class DummyDB(object):
 
     def setActivityMonitor(self, am):
         self.am = am
+
+    def getActivityMonitor(self):
+        return self.am
 
 
 class DummyConnection(object):
