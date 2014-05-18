@@ -91,10 +91,6 @@ class DummyRequest(object):
 
     def __init__(self):
         self.environ = {}
-        self.made_seekable = 0
-
-    def make_body_seekable(self):
-        self.made_seekable += 1
 
 
 class DummyResponse(object):
