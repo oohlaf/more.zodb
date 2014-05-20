@@ -52,8 +52,8 @@ def test_zodb_handler():
     def handler_test_get_zodb_root(request):
         req_conn = request.primary_zodb_conn
         assert req_conn.db.getActivityMonitor()
-        assert req_conn.closed is False
-        assert req_conn.transaction_manager.aborted is False
+        assert not req_conn.closed
+        assert not req_conn.transaction_manager.aborted
 
         primary_root = get_zodb_root(request)
         assert primary_root is req_conn.root()
@@ -67,8 +67,8 @@ def test_zodb_handler():
                                  db_from_uri=db_from_uri)
     result = publish(request)
     assert result is response
-    assert request.primary_zodb_conn.transaction_manager.aborted is True
-    assert request.primary_zodb_conn.closed is True
+    assert request.primary_zodb_conn.transaction_manager.aborted
+    assert request.primary_zodb_conn.closed
 
 
 class DummySettingsSectionContainer(object):
